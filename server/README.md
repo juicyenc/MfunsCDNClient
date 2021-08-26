@@ -9,8 +9,8 @@ Functions
 ---
 
  - [x] Persistent cache store on the disk
- - [] Preheat memory cache at startup
- - [] Traffic to random node
+ - [ ] Preheat memory cache at startup
+ - [ ] Traffic to random node
 
 Long-Term Todo
 ---
