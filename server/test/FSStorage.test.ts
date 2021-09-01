@@ -6,15 +6,26 @@ import { exit } from 'process';
 
 import { FSStorage } from '../storage/FSStorage';
 
-    var tmp_path = path.join(__dirname,'mp');
-    console.log(tmp_path);
-    fs.mkdirSync(tmp_path);
-    var storage = new FSStorage(tmp_path);
-        let buffer = Buffer.alloc(10);
-        buffer.write("abcde", "ascii");
-        console.log("before write");
-        storage.write_file("2b2b4b2b", buffer).then(()=>{
-            console.log("before read");
-        storage.read_file("2b2b4b2b").then(() => {
-            exit(0);
-        })})
+describe("Filesystem storage test", () => {
+    it("should be able to write and read file", (done) => {
+        var tmp_path = path.join(__dirname,'mp');
+        var storage = new FSStorage(tmp_path);
+        var buffer = Buffer.alloc(10);
+    
+        fs.rmdirSync(tmp_path, {
+            recursive: true
+        });
+        fs.mkdirSync(tmp_path);
+        storage.pollute_dir().then(() => {
+            buffer.write("abcde", "ascii");
+            return storage.write_file("2b2b4b2b", buffer);
+        }).then(() => {
+            return storage.read_file("2b2b4b2b");
+        }).then(() => {
+            fs.rmdirSync(tmp_path, {
+                recursive: true
+            });
+            done();
+        });
+    });
+})

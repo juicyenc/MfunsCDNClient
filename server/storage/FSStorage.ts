@@ -11,13 +11,19 @@ export class FSStorage implements IObjectStorage {
     constructor(base: string)
     {
         this.base = base;
+    }
+
+    pollute_dir(): Promise<any> 
+    {
+        let promises = [];
         for(let i = 0; i < (1 << 8); i++)
         {
             let name = i.toString(16).toLowerCase();
             if(name.length === 1) name = '0' + name;
             name = path.join(this.base, name);
-            fs.mkdirSync(name);
+            promises.push(fs.promises.mkdir(name));
         }
+        return Promise.all(promises);
     }
 
     read_file(sha256: string): Promise<Buffer>
