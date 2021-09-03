@@ -40,6 +40,7 @@ export default class CDN {
         return await axios.get(url,{
             responseType: 'arraybuffer',
             onDownloadProgress,
+            withCredentials: true
         })
     }
 
@@ -47,7 +48,8 @@ export default class CDN {
     {
         let result = await axios.get(endpoint, {
             headers: this.headers,
-            responseType: 'json'
+            responseType: 'json',
+            withCredentials: true
         });
         
         let urls = result.data.urls ?? [];
