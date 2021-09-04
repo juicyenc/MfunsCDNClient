@@ -9,11 +9,11 @@ export default class AlwaysFalseAuthHandler implements IAuthHandler{
 
     async authenticate(config: any): Promise<boolean>
     {
-        return await false;
+        return false;
     }
 
     async get_token(): Promise<string>
     {
-        return await "";
+        return Promise.reject();
     }
 }
