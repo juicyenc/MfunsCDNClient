@@ -37,7 +37,7 @@ export default class CDN {
         url: string,
         onDownloadProgress: (any)=>any): Promise<ArrayBuffer>
     {
-        return await axios.get(url,{
+        return axios.get(url,{
             responseType: 'arraybuffer',
             onDownloadProgress,
             withCredentials: true
