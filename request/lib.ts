@@ -28,7 +28,7 @@ export default class CDN {
     private get_central_url(id: string): string
     {
         let pathname = this.centralEndpoint.pathname.concat('/f/', id);
-        let url = new URL(this.centralEndpoint);
+        let url = new URL(this.centralEndpoint.toString());
         url.pathname = pathname;
         return url.toString();
     }
