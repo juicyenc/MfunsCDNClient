@@ -14,7 +14,7 @@ export default class CDN {
     }
 
     async get(id: string,
-        onDownloadProgress: (any) => any): Promise<ArrayBuffer>
+        onDownloadProgress: (any) => any = null): Promise<ArrayBuffer>
     {
         var url = this.get_central_url(id);
         var nextHop: NextHopResult;
