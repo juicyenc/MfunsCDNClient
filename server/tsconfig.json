@@ -13,6 +13,6 @@
         "index.ts"
     ],
     "include": [
-        "test/**/*.test.ts"
+        "**/test/*.test.ts"
     ]
 }
