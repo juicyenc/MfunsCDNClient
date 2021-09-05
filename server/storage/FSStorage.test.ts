@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 import { exit } from 'process';
 
-import { FSStorage } from '../storage/FSStorage';
+import { FSStorage } from './FSStorage';
 
 describe("Filesystem storage test", () => {
     it("should be able to write and read file", (done) => {
