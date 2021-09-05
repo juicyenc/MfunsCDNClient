@@ -37,7 +37,7 @@ export class FSStorage implements IObjectStorage {
         return fs.promises.readFile(filepath);
     }
 
-    write_file(sha256: string, data: Buffer): Promise<void>
+    async write_file(sha256: string, data: Buffer): Promise<void>
     {
         sha256 = sha256.toLowerCase();
         var filepath = path.join(
@@ -45,10 +45,8 @@ export class FSStorage implements IObjectStorage {
             sha256.substr(0,2),
             sha256.substr(2)
         );
-        return fs.promises.open(filepath, fs.constants.O_CREAT | fs.constants.O_WRONLY).then((fd) => {
-            return fd.write(data);
-        }).then(()=>{
-            return;
-        });
+        let fd = await fs.promises.open(filepath, fs.constants.O_CREAT | fs.constants.O_WRONLY);
+        fd.write(data);
+        fd.close();
     }
 }
