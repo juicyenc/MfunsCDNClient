@@ -18,10 +18,10 @@ function sha256_check(hash: string): boolean
     for(let i = 0; i < hash.length; i++)
     {
         let ch: number = hash.charCodeAt(i);
-        if((ch < ASCII_0 || ch > ASCII_0 + 9) && (ch < ASCII_a || ch > ASCII_a + 5))
-        {
-            return false;
-        }
+        if(
+            (ch < ASCII_0 || ch > ASCII_0 + 9) &&
+            (ch < ASCII_a || ch > ASCII_a + 5)
+        ) return false;
 
     }
     return true;
@@ -39,7 +39,8 @@ export function file_handler(
 {
     // check path format
     let path = req.path;
-    path = path.substr(1); // remove preceeding slash
+    // remove preceeding slash
+    path = path.substr(1);
     if(!sha256_check(path))
     {
         next();
@@ -50,15 +51,21 @@ export function file_handler(
 
     // get from cache
     singleton.memoryCache.read_file(path).then(
-        (buf) => {
-            res.status(200).send(buf).end();
-        }
-    ).catch(
-        async (err) => {
-            //If there is some error, then fetch the file
-            var file_buf = await singleton.register.get_file(path);
-            singleton.memoryCache.write_file(path, file_buf);
-            res.status(200).send(file_buf).end();
+        (buf) =>
+        {
+            res.status(200)
+                .send(buf)
+                .end();
         }
     )
+        .catch(
+            async () => 
+            {
+                //If there is some error, then fetch the file
+                var file_buf = await singleton.register.get_file(path);
+                singleton.memoryCache.write_file(path, file_buf);
+                res.status(200).send(file_buf)
+                    .end();
+            }
+        )
 }

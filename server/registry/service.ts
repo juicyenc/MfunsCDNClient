@@ -31,9 +31,7 @@ export class RegisterService
     async get_file(hash: string): Promise<Buffer>
     {
         if(!this.authenticated)
-        {
             return Promise.reject("Not authenticated");
-        }
 
         return Buffer.from(await this.cdnDownloader.get(hash));
     }

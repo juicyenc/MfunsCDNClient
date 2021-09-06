@@ -1,5 +1,4 @@
 import { MemoryCache } from './cache/MemoryCache';
-import { IObjectStorage } from './storage/IObjectStorage';
 import { FSStorage } from './storage/FSStorage';
 import { RegisterService } from './registry/service';
 
@@ -25,7 +24,7 @@ export async function init()
 
     try
     {
-        let staticState = await fs.promises.stat(staticPath);
+        await fs.promises.stat(staticPath);
     }
     catch(e)
     {

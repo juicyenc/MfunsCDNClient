@@ -4,10 +4,10 @@ import { IAuthHandler } from "./IAuthHandler";
  * @class AlwaysFalseAuthHandler
  * @description Do nothing and return failed.
  */
-export default class AlwaysFalseAuthHandler implements IAuthHandler{
-    constructor() { }
+export default class AlwaysFalseAuthHandler implements IAuthHandler
+{
 
-    async authenticate(config: any): Promise<boolean>
+    async authenticate(): Promise<boolean>
     {
         return false;
     }

@@ -34,13 +34,15 @@ export class MemoryCache implements IObjectStorage
     {
         if(this.skip_list.has(sha256))
         {
-            return new Promise<Buffer>((resolve, reject) => {
+            return new Promise<Buffer>((resolve) => 
+            {
                 var buf = this.skip_list.find(sha256);
                 buf.last_touch = Date.now();
                 resolve(buf.buf);
             });
         }
-        return this.backend.read_file(sha256).then((buf) => {
+        return this.backend.read_file(sha256).then((buf) => 
+        {
             this.skip_list.upsert(sha256,
                 MemObjectBuffer.build_from_buf(buf))
             

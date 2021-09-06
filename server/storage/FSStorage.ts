@@ -4,7 +4,8 @@ import path from 'path';
 
 import { IObjectStorage } from './IObjectStorage';
 
-export class FSStorage implements IObjectStorage {
+export class FSStorage implements IObjectStorage
+{
 
     base: string;
 
@@ -19,7 +20,7 @@ export class FSStorage implements IObjectStorage {
         for(let i = 0; i < (1 << 8); i++)
         {
             let name = i.toString(16).toLowerCase();
-            if(name.length === 1) name = '0' + name;
+            if(1 === name.length) name = `0${name}`;
             name = path.join(this.base, name);
             promises.push(fs.promises.mkdir(name));
         }
@@ -31,7 +32,7 @@ export class FSStorage implements IObjectStorage {
         sha256 = sha256.toLowerCase();
         var filepath = path.join(
             this.base,
-            sha256.substr(0,2),
+            sha256.substr(0, 2),
             sha256.substr(2)
         );
         return fs.promises.readFile(filepath);
@@ -42,10 +43,11 @@ export class FSStorage implements IObjectStorage {
         sha256 = sha256.toLowerCase();
         var filepath = path.join(
             this.base,
-            sha256.substr(0,2),
+            sha256.substr(0, 2),
             sha256.substr(2)
         );
-        let fd = await fs.promises.open(filepath, fs.constants.O_CREAT | fs.constants.O_WRONLY);
+        let fd = await fs.promises.open(
+            filepath, fs.constants.O_CREAT | fs.constants.O_WRONLY);
         fd.write(data);
         fd.close();
     }
