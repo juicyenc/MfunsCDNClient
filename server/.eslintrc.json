@@ -25,7 +25,7 @@
         "no-self-compare": "error",
         "no-self-assign": "error",
         "no-unused-expressions": "error",
-        "no-unused-vars": "warn",
+        "no-unused-vars": "off",
         "no-useless-concat": "error",
         "no-useless-escape": "warn",
         "no-useless-return": "error",
