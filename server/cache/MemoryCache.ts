@@ -23,10 +23,15 @@ export class MemoryCache implements IObjectStorage
         catch
         {
             // not found in cache
-            var buf = await this.backend.read_file(sha256);
-            this.skip_list.insert(sha256, buf);
-            return buf;
+            return this.read_from_backend(sha256);
         }
+    }
+
+    async read_from_backend(sha256: string): Promise<Buffer>
+    {
+        var buf = await this.backend.read_file(sha256);
+        await this.skip_list.insert(sha256, buf);
+        return buf;
     }
 
     write_file(sha256: string, data: Buffer): Promise<any>
@@ -37,5 +42,15 @@ export class MemoryCache implements IObjectStorage
             promise,
             this.backend.write_file(sha256, data)
         ])
+    }
+
+    preheat(shaList: string[]): Promise<any>
+    {
+        var promises = [];
+        shaList.forEach((val) => 
+        {
+            promises.push(this.read_from_backend(val));
+        });
+        return Promise.all(promises);
     }
 }
