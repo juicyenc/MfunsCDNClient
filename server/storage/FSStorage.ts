@@ -14,8 +14,9 @@ export class FSStorage implements IObjectStorage
         this.base = base;
     }
 
-    pollute_dir(): Promise<any> 
+    pollute_dir(base: string = this.base, depth: number = 2): Promise<any> 
     {
+        if(depth === 0) return Promise.resolve();
         let promises = [];
         for(let i = 0; i < (1 << 8); i++)
         {
@@ -23,6 +24,7 @@ export class FSStorage implements IObjectStorage
             if(1 === name.length) name = `0${name}`;
             name = path.join(this.base, name);
             promises.push(fs.promises.mkdir(name));
+            promises.push(this.pollute_dir(name), depth - 1);
         }
         return Promise.all(promises);
     }
@@ -33,7 +35,8 @@ export class FSStorage implements IObjectStorage
         var filepath = path.join(
             this.base,
             sha256.substr(0, 2),
-            sha256.substr(2)
+            sha256.substr(2,2),
+            sha256.substr(4)
         );
         return fs.promises.readFile(filepath);
     }
@@ -44,7 +47,8 @@ export class FSStorage implements IObjectStorage
         var filepath = path.join(
             this.base,
             sha256.substr(0, 2),
-            sha256.substr(2)
+            sha256.substr(2),
+            sha256.substr(4)
         );
         let fd = await fs.promises.open(
             filepath, fs.constants.O_CREAT | fs.constants.O_WRONLY);
